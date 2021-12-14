@@ -20,29 +20,27 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Welcome to [Hexo](https:&#x2F;&#x2F;hexo.io&#x2F;)! This is your very first post. Check [documentation](https:&#x2F;&#x2F;hexo.io&#x2F;docs&#x2F;) for more info. If you get any problems when using Hexo, you can find the answer in [trou">
+<meta name="description" content="方法一:利用getResources().getIdentifier(String name,String defType,String defPackage) 获取 123456public int  getResource(String imageName)&amp;#123;     Context ctx&#x3D;getBaseContext();     int resId &#x3D; getResources">
 <meta property="og:type" content="article">
-<meta property="og:title" content="顶顶顶顶顶">
-<meta property="og:url" content="http://example.com/2021/12/11/hello-world/index.html">
+<meta property="og:title" content="Android-通过String资源获取ID">
+<meta property="og:url" content="http://example.com/2021/12/14/Android-%E9%80%9A%E8%BF%87String%E8%8E%B7%E5%8F%96%E8%B5%84%E6%BA%90id/index.html">
 <meta property="og:site_name" content="Nathan的博客">
-<meta property="og:description" content="Welcome to [Hexo](https:&#x2F;&#x2F;hexo.io&#x2F;)! This is your very first post. Check [documentation](https:&#x2F;&#x2F;hexo.io&#x2F;docs&#x2F;) for more info. If you get any problems when using Hexo, you can find the answer in [trou">
+<meta property="og:description" content="方法一:利用getResources().getIdentifier(String name,String defType,String defPackage) 获取 123456public int  getResource(String imageName)&amp;#123;     Context ctx&#x3D;getBaseContext();     int resId &#x3D; getResources">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-12-10T16:18:09.830Z">
-<meta property="article:modified_time" content="2021-12-13T14:35:31.391Z">
+<meta property="article:published_time" content="2021-12-14T12:15:46.537Z">
+<meta property="article:modified_time" content="2021-12-14T12:55:47.149Z">
 <meta property="article:author" content="Nathan">
-<meta property="article:tag" content="web">
-<meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2021/12/11/hello-world/">
+<link rel="canonical" href="http://example.com/2021/12/14/Android-%E9%80%9A%E8%BF%87String%E8%8E%B7%E5%8F%96%E8%B5%84%E6%BA%90id/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/11/hello-world/","path":"2021/12/11/hello-world/","title":"顶顶顶顶顶"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/14/Android-%E9%80%9A%E8%BF%87String%E8%8E%B7%E5%8F%96%E8%B5%84%E6%BA%90id/","path":"2021/12/14/Android-通过String获取资源id/","title":"Android-通过String资源获取ID"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>顶顶顶顶顶 | Nathan的博客</title>
+<title>Android-通过String资源获取ID | Nathan的博客</title>
   
 
 
@@ -88,7 +86,6 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
@@ -122,7 +119,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-number">1.</span> <span class="nav-text">方法一:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-number">2.</span> <span class="nav-text">方法二:</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -135,19 +132,14 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
         <span class="site-state-item-count">2</span>
-        <span class="site-state-item-name">标签</span></a>
+        <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
 </div>
@@ -185,7 +177,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/11/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/14/Android-%E9%80%9A%E8%BF%87String%E8%8E%B7%E5%8F%96%E8%B5%84%E6%BA%90id/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -198,7 +190,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          顶顶顶顶顶
+          Android-通过String资源获取ID
         </h1>
 
         <div class="post-meta-container">
@@ -208,15 +200,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2021-12-11 00:18:09" itemprop="dateCreated datePublished" datetime="2021-12-11T00:18:09+08:00">2021-12-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-13 22:35:31" itemprop="dateModified" datetime="2021-12-13T22:35:31+08:00">2021-12-13</time>
+      <time title="创建时间：2021-12-14 20:15:46 / 修改时间：20:55:47" itemprop="dateCreated datePublished" datetime="2021-12-14T20:15:46+08:00">2021-12-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -231,7 +217,6 @@
   
 </div>
 
-            <div class="post-description">Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).</div>
         </div>
       </header>
 
@@ -239,20 +224,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+        <h1 id="方法一"><a href="#方法一" class="headerlink" title="方法一:"></a>方法一:</h1><p>利用getResources().getIdentifier(String name,String defType,String defPackage) 获取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span>  <span class="title">getResource</span><span class="params">(String imageName)</span></span>&#123;</span><br><span class="line">     Context ctx=getBaseContext();</span><br><span class="line">     <span class="keyword">int</span> resId = getResources().getIdentifier(imageName, <span class="string">&quot;mipmap&quot;</span>, ctx.getPackageName());</span><br><span class="line">     <span class="comment">//如果没有在&quot;mipmap&quot;下找到imageName,将会返回0</span></span><br><span class="line">     <span class="keyword">return</span> resId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+<h1 id="方法二"><a href="#方法二" class="headerlink" title="方法二:"></a>方法二:</h1><p>使用反射机制获取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span>  <span class="title">getResource</span><span class="params">(String imageName)</span></span>&#123;</span><br><span class="line">    Class mipmap = R.mipmap.class;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Field field = mipmap.getField(imageName);</span><br><span class="line">        <span class="keyword">int</span> resId = field.getInt(imageName);</span><br><span class="line">        <span class="keyword">return</span> resId;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;<span class="comment">//如果没有在&quot;mipmap&quot;下找到imageName,将会返回0</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>PS:根据资源id获取资源名称:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String resName = getResources().getResourceName(resId);</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -260,13 +240,21 @@
     
 
     <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/web/" rel="tag"># web</a>
-              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
-          </div>
 
         
 
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/14/Android-%E9%80%82%E9%85%8DAndroid10%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" rel="prev" title="Android-适配Android10文件系统">
+                  <i class="fa fa-chevron-left"></i> Android-适配Android10文件系统
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/14/Android-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" rel="next" title="Android-文件操作">
+                  Android-文件操作 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
     </footer>
   </article>
 </div>

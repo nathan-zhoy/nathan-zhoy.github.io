@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="线程是程序中独立的个体，如果不经过处理就不能成为一个整体。线程间的通讯就是为是的线程成为一个整体的必胜方案之一。使用线程通讯后，CPU的使用率会大大提升，并且还可以对各个线程进行有效的把控与监督。 3.1 wait()与notify()3.1.1 不使用wait()与notify()1234567891011121314151617181920212223242526272829303132333">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nathan的博客">
+<meta property="og:url" content="http://example.com/2021/12/14/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6%EF%BC%883%EF%BC%89/index.html">
+<meta property="og:site_name" content="Nathan的博客">
+<meta property="og:description" content="线程是程序中独立的个体，如果不经过处理就不能成为一个整体。线程间的通讯就是为是的线程成为一个整体的必胜方案之一。使用线程通讯后，CPU的使用率会大大提升，并且还可以对各个线程进行有效的把控与监督。 3.1 wait()与notify()3.1.1 不使用wait()与notify()1234567891011121314151617181920212223242526272829303132333">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-14T12:15:46.522Z">
+<meta property="article:modified_time" content="2021-12-14T12:13:18.384Z">
+<meta property="article:author" content="Nathan">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/12/14/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6%EF%BC%883%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/14/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6%EF%BC%883%EF%BC%89/","path":"2021/12/14/Java-多线程通信机制（3）/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Nathan的博客</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Nathan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习，永无止境...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-wait-%E4%B8%8Enotify"><span class="nav-number">1.</span> <span class="nav-text">3.1 wait()与notify()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E4%B8%8D%E4%BD%BF%E7%94%A8wait-%E4%B8%8Enotify"><span class="nav-number">1.1.</span> <span class="nav-text">3.1.1 不使用wait()与notify()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E4%BB%80%E4%B9%88%E6%98%AFwait-notify-%E6%9C%BA%E5%88%B6"><span class="nav-number">1.2.</span> <span class="nav-text">3.1.2 什么是wait()&#x2F;notify()机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-3-wait-notify-%E6%9C%BA%E5%88%B6%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">3.1.3 wait()&#x2F;notify()机制的使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-join-%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">3.2 join()方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-join-%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">3.2.1 join()方法的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#join-%E6%BA%90%E7%A0%81"><span class="nav-number">2.2.</span> <span class="nav-text">join()源码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Nathan</p>
+  <div class="site-description" itemprop="description">纵然结局不如意，遇上以是上上签</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/14/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6%EF%BC%883%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Nathan">
+      <meta itemprop="description" content="纵然结局不如意，遇上以是上上签">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nathan的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-12-14 20:15:46 / 修改时间：20:13:18" itemprop="dateCreated datePublished" datetime="2021-12-14T20:15:46+08:00">2021-12-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>线程是程序中独立的个体，如果不经过处理就不能成为一个整体。线程间的通讯就是为是的线程成为一个整体的必胜方案之一。使用线程通讯后，CPU的使用率会大大提升，并且还可以对各个线程进行有效的把控与监督。</p>
+<h2 id="3-1-wait-与notify"><a href="#3-1-wait-与notify" class="headerlink" title="3.1 wait()与notify()"></a>3.1 wait()与notify()</h2><h3 id="3-1-1-不使用wait-与notify"><a href="#3-1-1-不使用wait-与notify" class="headerlink" title="3.1.1 不使用wait()与notify()"></a>3.1.1 不使用wait()与notify()</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">pulic class Main &#123;</span><br><span class="line">    </span><br><span class="line">    pbublic static void main(String[] args) &#123;</span><br><span class="line">        List list = new ArrayList();</span><br><span class="line">        new ThreadA(list).start();</span><br><span class="line">        new ThreadB(list).start();</span><br><span class="line">        //启动线程</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ThreadA extends Thread &#123;</span><br><span class="line">    </span><br><span class="line">    private volatile List list;</span><br><span class="line">    </span><br><span class="line">    public ThreadA(List list) &#123;</span><br><span class="line">        this.list = list;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        try&#123;</span><br><span class="line">            for(int i= 0; i &lt;= 10; i++)&#123;</span><br><span class="line">                list.add(i);</span><br><span class="line">                System.out.println(&quot;添加了第&quot;+ i + &quot;个元素&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ThreadB extends Thread &#123;</span><br><span class="line">    </span><br><span class="line">    private volatile List list;</span><br><span class="line">    </span><br><span class="line">    public ThreadA(List list) &#123;</span><br><span class="line">        this.list = list;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        try&#123;</span><br><span class="line">            while()&#123;</span><br><span class="line">                if(list.size() == 5)&#123;</span><br><span class="line">                    throw new InterruptedException(&quot;数据有5个了&quot;);</span><br><span class="line">                &#125;   </span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>虽然两个行程进行了通信，但是弊端就是必须有一个线程不断通过while循环检测一个条件，这样做会浪费CPU资源。如果轮询时间间隔很小，更浪费CPU资源。如果轮询时间很大，有可能会取不到我们想要的数据。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">while()&#123;</span><br><span class="line">    Thread.sleep(1000 * 10);</span><br><span class="line">    if(list.size()==5)&#123;</span><br><span class="line">        throw new InterruptedException(&quot;数据有5个了&quot;);</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每隔10s检测条件（模拟间隔大的现象），那么可能A 线程都运行完了，然后B线程还在休眠，所以导致就检测不到预期的数据。</p>
+<h3 id="3-1-2-什么是wait-notify-机制"><a href="#3-1-2-什么是wait-notify-机制" class="headerlink" title="3.1.2 什么是wait()/notify()机制"></a>3.1.2 什么是wait()/notify()机制</h3><p>就是说当A线程读取的数据不是我们预期的数据，那么A线程可以进行等待，当B线程把数据修改成我们预期的数据是，调用notify方法通知等待的线程A区做该做的任务。这样B线程就不用一直循环去耗费CPU资源。</p>
+<h3 id="3-1-3-wait-notify-机制的使用"><a href="#3-1-3-wait-notify-机制的使用" class="headerlink" title="3.1.3 wait()/notify()机制的使用"></a>3.1.3 wait()/notify()机制的使用</h3><p>wait()方法的作用是将当前正在执行的线程（谁调用wait()谁进入等待状态）放入到等待线程池内并且停止执行当前的任务，直到被通知或者意外中断才唤醒。进入wait之前线程必须先拿到一个对象锁（如果没有锁，就会抛出异常-非法监视状态异常），执行wait方法后会自动释放锁。</p>
+<p>notify()方法的作用就是将正在等待的线程进入运行态。如果有多个线程在等待，则会由线程调度器随机选取一个线程并唤醒参与竞争。进入notify方法之前必须先拿到一个对象锁（如果没有锁，就会抛出异常-非法监视状态异常），调用notify()方法后不会马上释放锁，要等到执行notify()方法的线程将任务执行完成之后，才会释放锁。</p>
+<p>==wait()方法会释放锁，而notify()并不会立马释放锁，要等出了同步代码区域才会释放锁。==</p>
+<p>==wait方()法遇到Exception会释放锁==</p>
+<p>==notifyAll()方法会唤醒全部等待池中的wait线程==</p>
+<p>==wait(long millis)方法的作用就是等待一定的时间，时间到了之后会自动唤醒。区别于sleep(long millis)方法，后者不会释放锁。==</p>
+<p>==防止停止过早使用notify()使得wait()状态的线程无法被唤醒。==</p>
+<h2 id="3-2-join-方法"><a href="#3-2-join-方法" class="headerlink" title="3.2 join()方法"></a>3.2 join()方法</h2><p>很多情况下，都是由主线程创建并调度子线程。如果子线程中有大量的运算，就会产生主线程早于子线程结束。这时如果主线程想等待子线程结束在结束，比如主线程等待子线程的结果，这个时候可以使用join()方法。该方法的作用就是等待线程对象销毁。</p>
+<h3 id="3-2-1-join-方法的使用"><a href="#3-2-1-join-方法的使用" class="headerlink" title="3.2.1 join()方法的使用"></a>3.2.1 join()方法的使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">pulic class Main &#123;</span><br><span class="line">    </span><br><span class="line">    pbublic static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        ThreadA t = new ThreadA(list).start();//启动线程</span><br><span class="line">        t.join();//主线程会卡在这里</span><br><span class="line">        System.out.println(&quot;子线程结束在运行&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ThreadA extends Thread &#123;</span><br><span class="line">    </span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        try&#123;</span><br><span class="line">            int value = (int) (Math.random() * 1000);</span><br><span class="line">            System.out.println(&quot;需要等待&quot;+ value + &quot;毫秒&quot;);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="join-源码"><a href="#join-源码" class="headerlink" title="join()源码"></a>join()源码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public final synchronized void join(long millis)</span><br><span class="line">    throws InterruptedException &#123;</span><br><span class="line">        long base = System.currentTimeMillis();</span><br><span class="line">        long now = 0;</span><br><span class="line"></span><br><span class="line">        if (millis &lt; 0) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;timeout value is negative&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (millis == 0) &#123;</span><br><span class="line">            while (isAlive()) &#123;</span><br><span class="line">                wait(0);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            while (isAlive()) &#123;</span><br><span class="line">                long delay = millis - now;</span><br><span class="line">                if (delay &lt;= 0) &#123;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                wait(delay);</span><br><span class="line">                now = System.currentTimeMillis() - base;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>join()方法就是使得所属线程对象（子线程）去执行他的任务，而使得当前线程（主线程）进入无限期等待状态。join()方法内部使用的是wait()/notify()机制，而synchronized使用的是对象锁。</p>
+<p>==join()方法区别于sleep()方法，前者会释放锁，后者不会。==</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/14/Java-ArrayList%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" rel="prev" title="Java-ArrayList源码分析">
+                  <i class="fa fa-chevron-left"></i> Java-ArrayList源码分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/14/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6%EF%BC%882%EF%BC%89/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nathan</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

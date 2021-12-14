@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Android 7.0文件共享适配自7.0开始，android不允许应用之间通过file:&#x2F;&#x2F;协议的Uri共享文件，否则将抛出FileUriExposedException异常。举个常见的使用场景：调用系统应用拍照，我们需要传递一个Uri，告诉照片的存储位置。 12345678public void share() &amp;#123;    Intent capturePicIntent &#x3D; new I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android-适配Android7.0文件共享">
+<meta property="og:url" content="http://example.com/2021/12/14/Android-%E9%80%82%E9%85%8DAndroid7.0%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/index.html">
+<meta property="og:site_name" content="Nathan的博客">
+<meta property="og:description" content="Android 7.0文件共享适配自7.0开始，android不允许应用之间通过file:&#x2F;&#x2F;协议的Uri共享文件，否则将抛出FileUriExposedException异常。举个常见的使用场景：调用系统应用拍照，我们需要传递一个Uri，告诉照片的存储位置。 12345678public void share() &amp;#123;    Intent capturePicIntent &#x3D; new I">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-14T12:15:46.532Z">
+<meta property="article:modified_time" content="2021-12-14T13:15:23.950Z">
+<meta property="article:author" content="Nathan">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/12/14/Android-%E9%80%82%E9%85%8DAndroid7.0%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/14/Android-%E9%80%82%E9%85%8DAndroid7.0%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/","path":"2021/12/14/Android-适配Android7.0文件共享/","title":"Android-适配Android7.0文件共享"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Android-适配Android7.0文件共享 | Nathan的博客</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Nathan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习，永无止境...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-7-0%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB%E9%80%82%E9%85%8D"><span class="nav-number">1.</span> <span class="nav-text">Android 7.0文件共享适配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-FileProvider"><span class="nav-number">1.2.</span> <span class="nav-text">创建 FileProvider</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E-FileProvider"><span class="nav-number">1.3.</span> <span class="nav-text">声明 FileProvider</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.4.</span> <span class="nav-text">编写配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Uri"><span class="nav-number">1.5.</span> <span class="nav-text">使用Uri</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Nathan</p>
+  <div class="site-description" itemprop="description">纵然结局不如意，遇上以是上上签</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/14/Android-%E9%80%82%E9%85%8DAndroid7.0%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Nathan">
+      <meta itemprop="description" content="纵然结局不如意，遇上以是上上签">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nathan的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android-适配Android7.0文件共享
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-12-14 20:15:46 / 修改时间：21:15:23" itemprop="dateCreated datePublished" datetime="2021-12-14T20:15:46+08:00">2021-12-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">安卓</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Android-7-0文件共享适配"><a href="#Android-7-0文件共享适配" class="headerlink" title="Android 7.0文件共享适配"></a>Android 7.0文件共享适配</h1><p>自7.0开始，android不允许应用之间通过file://协议的Uri共享文件，否则将抛出FileUriExposedException异常。举个常见的使用场景：调用系统应用拍照，我们需要传递一个Uri，告诉照片的存储位置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">share</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Intent capturePicIntent = <span class="keyword">new</span> Intent(MediaStore.ACTION_IMAGE_CAPTURE);</span><br><span class="line">    File destinationFile = <span class="keyword">new</span> File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), <span class="string">&quot;my_pic.jpg&quot;</span>);</span><br><span class="line">    Uri savePicFileUri = Uri.fromFile(destinationFile);</span><br><span class="line">    capturePicIntent.putExtra(MediaStore.EXTRA_OUTPUT, savePicFileUri);</span><br><span class="line">    startActivity(capturePicIntent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在7.0及以后，如此创建Uri会抛出异常。</p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>调取系统相机拍照的本质是与系统应用交互，而不同应用之间不允许通过file://协议的Uri共享文件。Android给出的解决方案是通过FileProvider生成一个content://协议的Uri。</p>
+<h2 id="创建-FileProvider"><a href="#创建-FileProvider" class="headerlink" title="创建 FileProvider"></a>创建 FileProvider</h2><p>第一步,继承android.support.v4.content.FileProvider定义一个FileProvider类，但不需要如外实现任何代码。大多数开发者会直接使用android.support.v4.content.FileProvider，不推荐那么做，原因后面剖析。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyFileProvider</span> <span class="keyword">extends</span> <span class="title">FileProvider</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="声明-FileProvider"><a href="#声明-FileProvider" class="headerlink" title="声明 FileProvider"></a>声明 FileProvider</h2><p>第二步，声明FileProvider，FileProvider本质是一个ContentProvider，所以要在Manifest.xml文件中声明。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">provider</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;.provider.MyFileProvider&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:authorities</span>=<span class="string">&quot;com.coder.zzq.system.version.sdk.adaptation.FILE_PROVIDER&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:grantUriPermissions</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">&quot;android.support.FILE_PROVIDER_PATHS&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:resource</span>=<span class="string">&quot;@xml/mapping_file_path&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">provider</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><provider>标签下:</p>
+<ul>
+<li>name，FileProvider的全称类名。</li>
+<li>authorities，FileProvider的唯一标识，一般以包名打头，确保唯一性。</li>
+<li>exported，false表示不公开给其他应用。</li>
+<li>grantUriPermissions，true表示授予Uri临时权限。</li>
+</ul>
+<meta>标签下:
+
+<ul>
+<li>name，固定值，”android.support.FILE_PROVIDER_PATHS”。</li>
+<li>resource，路径映射文件。</li>
+</ul>
+<h2 id="编写配置文件"><a href="#编写配置文件" class="headerlink" title="编写配置文件"></a>编写配置文件</h2><p>第三步，编写路径映射文件，路径映射文件用于配置其他应用通过FileProvider可访问的目录。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">paths</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">external-files-path</span></span></span><br><span class="line"><span class="tag">        <span class="attr">name</span>=<span class="string">&quot;external_storage_files_dir&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">path</span>=<span class="string">&quot;/Pictures&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">paths</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>paths提供了6个子标签，用于配置可访问的路径类型。</p>
+<ul>
+<li><file-path>，根路径对应内部存储：/data/user/0/包名/files</li>
+<li><cache-path> 根路径对应内部存储：/data/user/0/包名/cache</li>
+<li><external-path> 根路径对应外部存储：storage/emulated/0</li>
+<li><external-files-path> 根路径对应外部存储：/storage/emulated/0/Android/data/包名/files</li>
+<li><external-cache-path> 根路径对应外部存储：/storage/emulated/0/Android/data/包名/cache</li>
+<li><external-media-path> 根路径对应外部存储：/storage/emulated/0/Android/media/包名</li>
+</ul>
+<p>每个子标签的name属性表示该项配置的名字，可自由设置，path为子路径，如果是该路径类型下所有文件及子路径均可访问，则用“.”表示。</p>
+<h2 id="使用Uri"><a href="#使用Uri" class="headerlink" title="使用Uri"></a>使用Uri</h2><p>第四步，使用FileProvider创建Uri。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shareByProvider</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Intent capturePicIntent = <span class="keyword">new</span> Intent(MediaStore.ACTION_IMAGE_CAPTURE);</span><br><span class="line">    File destinationFile = <span class="keyword">new</span> File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), <span class="string">&quot;my_pic.jpg&quot;</span>);</span><br><span class="line">    Uri savePicFileUri = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.N) &#123;</span><br><span class="line">        savePicFileUri = MyFileProvider.getUriForFile(<span class="keyword">this</span>, getString(R.string.file_provider_authorities), destinationFile);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        savePicFileUri = Uri.fromFile(destinationFile);</span><br><span class="line">    &#125;</span><br><span class="line">    capturePicIntent.putExtra(MediaStore.EXTRA_OUTPUT, savePicFileUri);</span><br><span class="line">    <span class="comment">//添加临时读取权限</span></span><br><span class="line">    <span class="comment">//Intent.FLAG_GRANT_WRITE_URI_PERMISSION content URL 写入权限 </span></span><br><span class="line">    <span class="comment">//Intent.FLAG_GRANT_READ_URI_PERMISSION content URL 读取权限</span></span><br><span class="line">    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">    startActivity(capturePicIntent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此，适配完成。</p>
+<p>最后说一下为什么不推荐直接使用android.support.v4.content.FileProvider而是多此一举创建一个没有任何新代码的子类。</p>
+<p>我们的项目都会引入第三方库，在第三方库中由于功能需要，可能也进行了FileProvider的配置。假设这个第三方库就是用来拍照的，它封装了拍照功能，实现上把照片的Uri直接置于内部存储的/data/user/0/包名/files/Pictures下。</p>
+<p>我们的项目和第三方库都直接使用android.support.v4.content.FileProvider类的话,我们需要replace它们的authorities和resource，并且把所有第三方库映射文件中的配置项都要包含到我们项目的映射文件中来。</p>
+<p>非常麻烦且容易疏漏。最好的办法就是自定义FileProvider类，使我们的FileProvider同其他的库的FileProvider分开，互不干扰。由于不需要如外实现新的代码，所以是很简单的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/14/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/14/Android-%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8%E6%89%93%E5%BC%80/" rel="next" title="Android-使用其他应用打开">
+                  Android-使用其他应用打开 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nathan</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
